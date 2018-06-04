@@ -7,8 +7,8 @@ import requests
 import urllib2
 import json
 from bs4 import BeautifulSoup
-import re
 import pprint
+import csv
 
 # Keys 
 client_ID = 'iS3GYpBAJT4HiVwXbcqGVve9esOSqiCUkYGzOVBzHWbW3o2c7ChjMkEgMtpAsAM5'
@@ -19,7 +19,7 @@ client_access_token = 'A9E6664U_jZVDQmRvZTjgbbXinigqzztzaaIc8_xFuateNaOngJhwTeQu
 
 
 # Search terms
-search_term = "mount eerie"
+search_term = "elliott smith"    # Get user input!
 
 
 
@@ -45,7 +45,7 @@ artist_id = json_obj['response']['hits'][0]['result']['primary_artist']['id']
 
 
 # Find songs associated with artists ID
-for page_count in range(1, 3):
+for page_count in range(1, 2):                                                 # Change to 3 or 4
     querystring = "https://api.genius.com/artists/" + str(artist_id) + \
                                    '/songs?per_page=50&sort=popularity' + \
                                    '&page=' + str(page_count)
@@ -64,16 +64,22 @@ for page_count in range(1, 3):
     end = '-lyrics'
     lyric_dict = {}
     for song in song_list:
-        song = song
         URL = 'https://genius.com/' + artist + '-' + song + end
         page = requests.get(URL)    
         html = BeautifulSoup(page.text, "html.parser") # Extract the page's HTML as a string
     
         # Scrape the song lyrics from the HTML
         try:
-            lyrics = html.find("div", class_="lyrics").get_text().encode('ascii','ignore')
-            lyric_dict[song] = [lyrics]
-        except AttributeError:
-            continue
+            lyrics = html.find("div", class_="lyrics").get_text().encode('ascii','ignore')    # Add fix for multiple pages
+            lyric_dict[song.replace('-', ' ')] = [lyrics]
+        except AttributeError: 
+            pass  # no lyrics in song
     
 pprint.pprint(lyric_dict)
+
+
+with open(search_term + '.csv', 'wb') as f:
+    writer = csv.writer(f)
+    writer.writerow(['song', 'lyrics'])
+    for row in lyric_dict.iteritems():
+        writer.writerow(row)
