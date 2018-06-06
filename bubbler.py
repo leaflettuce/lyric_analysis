@@ -19,7 +19,7 @@ for i in me['lyrics']:
     lyrics = lyrics + i
  
 #clean up
-lyrics = lyrics.replace('\\n', ' ').replace("\"",'').replace('\'', '').replace('-','').replace(',', '')
+lyrics = lyrics.replace('\\n', ' ').replace("\"",'').replace('\'', '').replace('-','').replace(',', '').replace('\\','')
 lyrics = lyrics.replace('[', '').replace(']', '').replace('(','').replace(')', '').replace('/','').replace('.','')
 lyrics = lyrics.lower()
 
@@ -40,28 +40,13 @@ freq = nltk.FreqDist(cleaned_words)
 word_dict = {}
 for i in freq:
     word_dict[i.lower()] = freq[i]
-    
-del word_dict['the']
-del word_dict['and']
-del word_dict['i']
-del word_dict['a']
-del word_dict['in']
-del word_dict['my']
-del word_dict['your']
-del word_dict['to']
-del word_dict['but']
-del word_dict['go']
-del word_dict['i\m']
-del word_dict['im']
-del word_dict['with']
-del word_dict['to']
-del word_dict['so']
-del word_dict['this']
-del word_dict['is']
-del word_dict['you']
-del word_dict['me']
-del word_dict['see']
-del word_dict['do']
+
+del_words = ['the', 'and', 'i', 'a', 'in', 'my', 'your', 'to', 'but', 'go',
+             'i\m', 'im','with','to','so','this','is','you','me','see','do','the',
+            'of', 'was', 'it', 'that', 'not', 'theres']
+for i in del_words:
+    if i in word_dict.keys():
+        del word_dict[i]
 
 
 # plot
@@ -76,9 +61,9 @@ lemmatizer = WordNetLemmatizer()
 print(lemmatizer.lemmatize('died')) 
 
 #bubbler
-wc = WordCloud(height = 500, width = 1000, background_color="darkgrey", max_words=2000,
+wc = WordCloud(height = 500, width = 1000, background_color="tan", max_words=2000,
                stopwords=stopwords, max_font_size=100, random_state=42, relative_scaling = .5,
-               colormap = 'ocean')
+               colormap = 'Blues')
 
 wc = wc.generate_from_frequencies(word_dict)
 wc.to_file('mount_eerie_bubble.jpg')
