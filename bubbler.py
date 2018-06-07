@@ -11,7 +11,8 @@ from wordcloud import WordCloud, STOPWORDS
 
 
 # import
-me = pd.read_csv("data/mount_eerie.csv")
+artist = str(raw_input('enter artist name: (ex: mount_eerie): '))
+me = pd.read_csv("data/" + artist + ".csv")
 
 # aggregate all lyrics togther
 lyrics = ""
@@ -43,7 +44,9 @@ for i in freq:
 
 del_words = ['the', 'and', 'i', 'a', 'in', 'my', 'your', 'to', 'but', 'go',
              'i\m', 'im','with','to','so','this','is','you','me','see','do','the',
-            'of', 'was', 'it', 'that', 'not', 'theres']
+            'of', 'was', 'it', 'that', 'not', 'theres', 'verse', 'chorus',
+            '1', '2', '3', 'dont', 'ill', 'doo', 'intro', 'outro', 'be', 
+            'are', '15']
 for i in del_words:
     if i in word_dict.keys():
         del word_dict[i]
@@ -61,9 +64,14 @@ lemmatizer = WordNetLemmatizer()
 print(lemmatizer.lemmatize('died')) 
 
 #bubbler
-wc = WordCloud(height = 500, width = 1000, background_color="tan", max_words=2000,
-               stopwords=stopwords, max_font_size=100, random_state=42, relative_scaling = .5,
-               colormap = 'Blues')
+color_map = raw_input('enter colormap: ')
+background = raw_input('enter background color: ')
+wc = WordCloud(height = 500, width = 1000, background_color=background, max_words=2000,
+               stopwords=stopwords, max_font_size=170, random_state=42, relative_scaling = .5,
+               colormap = color_map)
 
 wc = wc.generate_from_frequencies(word_dict)
-wc.to_file('mount_eerie_bubble.jpg')
+wc.to_file('imgs/' + artist + '_bubble.jpg')
+
+print('Unique word count: ')
+print(float(len(freq))/len(cleaned_words) *100)

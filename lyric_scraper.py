@@ -78,7 +78,7 @@ for page_count in range(1, 4):
 pprint.pprint(lyric_dict)
 
 
-with open(search_term + '.csv', 'wb') as f:
+with open('data/' + artist.replace('-', '_') + '.csv', 'wb') as f:
     writer = csv.writer(f)
     writer.writerow(['song', 'lyrics'])
     for row in lyric_dict.iteritems():
