@@ -68,7 +68,7 @@ del_words = ['the', 'and', 'i', 'a', 'in', 'my', 'your', 'to', 'but', 'go',
             'by', 'nigga', 'niggas', 'hook', 'chance', 'rapper', 'lamar',
             'instrumental', '4', '5', '6', '7' ,'8', '9', '10', 'pharrell',
             'teddy', 'kanye', 'west', 'tit', 'hranica', 'jeremy', 'mike',
-            'depoyster']
+            'depoyster', 'aesop', 'rock']
 for i in del_words:
     if i in word_dict.keys():
         del word_dict[i]
